@@ -23,8 +23,10 @@ namespace RavenSerializationIssue
 		public string Id { get; set; }
 
 
-		[NewtonsoftJson.JsonPropertyAttribute(TypeNameHandling = NewtonsoftJson.TypeNameHandling.All, ObjectCreationHandling = NewtonsoftJson.ObjectCreationHandling.Replace)]
-		[RavenJson.JsonPropertyAttribute(TypeNameHandling = RavenJson.TypeNameHandling.All, ObjectCreationHandling = RavenJson.ObjectCreationHandling.Replace)]
+		[NewtonsoftJson.JsonPropertyAttribute( TypeNameHandling = NewtonsoftJson.TypeNameHandling.All,
+			ObjectCreationHandling = NewtonsoftJson.ObjectCreationHandling.Replace )]
+		[RavenJson.JsonPropertyAttribute( TypeNameHandling = RavenJson.TypeNameHandling.All,
+			ObjectCreationHandling = RavenJson.ObjectCreationHandling.Replace )]
 		public List<NestedObject> NestedObjects
 		{
 			get { return _nestedObjects; }
@@ -41,15 +43,14 @@ namespace RavenSerializationIssue
 			nestedObject.SetValidationValue("keys", keys);
 			NestedObjects.Add(nestedObject);
 		}
+
 	}
 
 
 	[Serializable]
-	public class NestedObject : ISerializable
+	public class NestedObject 
 	{
 
-		[NewtonsoftJson.JsonPropertyAttribute(TypeNameHandling = NewtonsoftJson.TypeNameHandling.All, ObjectCreationHandling = NewtonsoftJson.ObjectCreationHandling.Replace)]
-		[RavenJson.JsonPropertyAttribute(TypeNameHandling = RavenJson.TypeNameHandling.All, ObjectCreationHandling = RavenJson.ObjectCreationHandling.Replace)]
 		private Dictionary<string, object> _validationValues;
 
 
@@ -59,8 +60,14 @@ namespace RavenSerializationIssue
 		}
 
 
-		[NewtonsoftJson.JsonPropertyAttribute(TypeNameHandling = NewtonsoftJson.TypeNameHandling.All, ObjectCreationHandling = NewtonsoftJson.ObjectCreationHandling.Replace)]
-		[RavenJson.JsonPropertyAttribute(TypeNameHandling = RavenJson.TypeNameHandling.All, ObjectCreationHandling = RavenJson.ObjectCreationHandling.Replace)]
+		public NestedObject( SerializationInfo info, StreamingContext context )
+		{
+		}
+
+		[NewtonsoftJson.JsonPropertyAttribute(TypeNameHandling = NewtonsoftJson.TypeNameHandling.All,
+			ObjectCreationHandling = NewtonsoftJson.ObjectCreationHandling.Replace)]
+		[RavenJson.JsonPropertyAttribute(TypeNameHandling = RavenJson.TypeNameHandling.All,
+			ObjectCreationHandling = RavenJson.ObjectCreationHandling.Replace)]
 		public Dictionary<string, object> ValidationValues
 		{
 			get { return _validationValues; }
@@ -68,9 +75,16 @@ namespace RavenSerializationIssue
 		}
 
 
+		public void GetObjectData( SerializationInfo info, StreamingContext context )
+		{
+			throw new NotImplementedException();
+		}
+
+
 		public void SetValidationValue( string propertyName, object value )
 		{
-			_validationValues.AddItem(propertyName,value);;
+			_validationValues.AddItem(propertyName, value);
+			;
 		}
 
 
@@ -79,12 +93,5 @@ namespace RavenSerializationIssue
 			return _validationValues[propertyName];
 		}
 
-
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			throw new NotImplementedException();
-		}
 	}
-
-	
 }
